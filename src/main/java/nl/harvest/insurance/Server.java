@@ -26,10 +26,10 @@ public class Server {
     private String host = null;
     private int port = 0;
 
-    private Selector selector = null;
     private ServerSocketChannel serverSocket = null;
+    private Selector selector = null;
 
-    private ByteBuffer buffer = ByteBuffer.allocate(1024);
+    private ChannelParser channel = new ChannelParser(1024);
 
     public Server(String host, int port) {
 
@@ -42,39 +42,36 @@ public class Server {
     public void start() {
 
         try {
-            registerServer();
+            bindServer();
 
             while(true) {
+                // Select channels who are ready for IO operations
                 selector.select();
 
                 Set<SelectionKey> keys = selector.selectedKeys();
                 Iterator<SelectionKey> iterator = keys.iterator();
 
+                // Iterate over the IO-ready channels
                 while(iterator.hasNext()) {
                     SelectionKey key = iterator.next();
 
-                    // Check for channels looking to connect
+                    // Accept incoming connections
                     if(key.isAcceptable()) {
                         SocketChannel socketChannel = serverSocket.accept();
+
                         socketChannel.configureBlocking(false);
                         socketChannel.register(selector, SelectionKey.OP_READ);
 
                         logger.info("Accepted: " + socketChannel);
                     }
 
-                    // Check for channels that are readable, response immediately
+                    // Read incoming data
                     if(key.isReadable()) {
                         SocketChannel socketChannel = (SocketChannel) key.channel();
 
-                        // TODO: check for possible incomplete messages
-                        socketChannel.read(buffer);
+                        String request = channel.readChannel(socketChannel);
 
-                        // TODO: process HTTP request
-                        System.out.println(new String(buffer.array()).trim());
-
-                        buffer.clear();
-                        buffer.put(new byte[1024]);
-                        buffer.clear();
+                        HTTPRequest requestHeader = new HTTPRequest(request);
 
                         // TODO: response based on request
                         responseMessage(socketChannel);
@@ -93,7 +90,7 @@ public class Server {
 
     }
 
-    private void registerServer() throws IOException {
+    private void bindServer() throws IOException {
 
         selector = Selector.open();
 
@@ -103,7 +100,8 @@ public class Server {
         serverSocket.configureBlocking(false);
         serverSocket.register(selector, SelectionKey.OP_ACCEPT);
 
-        logger.info("Starting server: " + host + ':' + port);
+        logger.info("Started server: " + host + ':' + port);
+
     }
 
     // TODO: response based on request
@@ -111,10 +109,17 @@ public class Server {
 
         String temp = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Type: text/html\r\n\r\nHello World!\n";
 
-        buffer.put(temp.getBytes());
-        buffer.flip();
-        socketChannel.write(buffer);
-        buffer.clear();
+        ByteBuffer buffer2 = ByteBuffer.allocate(temp.getBytes().length);
+
+        buffer2.put(temp.getBytes());
+        buffer2.flip();
+
+        while(buffer2.hasRemaining()) {
+            int temp2 = socketChannel.write(buffer2);
+        }
+
+        buffer2.clear();
+
     }
 
 }

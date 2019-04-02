@@ -1,7 +1,5 @@
 package nl.harvest.insurance;
 
-import java.nio.channels.Selector;
-
 public class Main {
 
     public static void main(String[] args) {
