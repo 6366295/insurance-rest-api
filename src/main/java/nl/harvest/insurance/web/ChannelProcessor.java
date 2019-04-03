@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import nl.harvest.insurance.urlpath.Responder;
-import nl.harvest.insurance.urlpath.CustomersResponder;
+import nl.harvest.insurance.api.Responder;
+import nl.harvest.insurance.api.CustomersResponder;
 
 public class ChannelProcessor {
 

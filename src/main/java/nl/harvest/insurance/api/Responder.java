@@ -1,4 +1,4 @@
-package nl.harvest.insurance.urlpath;
+package nl.harvest.insurance.api;
 
 /**
  * Interface for API responses
