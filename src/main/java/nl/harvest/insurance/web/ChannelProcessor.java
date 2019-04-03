@@ -9,6 +9,8 @@ import nl.harvest.insurance.api.ResponderMap;
 
 public class ChannelProcessor {
 
+    ResponderMap responderMap = new ResponderMap();
+
     private SocketChannel socketChannel = null;
     private ByteBuffer readBuffer = null;
 
@@ -32,8 +34,6 @@ public class ChannelProcessor {
     private HTTPResponse generateResponse(HTTPRequest httpRequest) {
 
         // Respond depending on the request path
-        ResponderMap responderMap = new ResponderMap();
-
         Responder response = responderMap.get(httpRequest.getPath());
 
         // System.out.println(httpRequest.getPath());

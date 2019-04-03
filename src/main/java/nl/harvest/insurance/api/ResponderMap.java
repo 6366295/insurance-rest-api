@@ -6,7 +6,7 @@ package nl.harvest.insurance.api;
 
 import java.util.HashMap;
 
-public class ResponderMap extends HashMap<String, Responder> {
+public final class ResponderMap extends HashMap<String, Responder> {
 
     public ResponderMap() {
         // Add more paths here
