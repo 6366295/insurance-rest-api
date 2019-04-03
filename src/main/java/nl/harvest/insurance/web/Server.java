@@ -1,19 +1,16 @@
-package nl.harvest.insurance;
+package nl.harvest.insurance.web;
 
 /**
  * Server using non-blocking IO pipelines
  */
 
 import java.io.IOException;
-
 import java.net.InetSocketAddress;
-
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-
 import java.util.Set;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -26,24 +23,35 @@ public class Server {
     private String host = null;
     private int port = 0;
 
-    private ServerSocketChannel serverSocket = null;
-    private Selector selector = null;
-
-    private ChannelParser channel = new ChannelParser(1024);
-
     public Server(String host, int port) {
 
         this.host = host;
         this.port = port;
 
         socketAddress = new InetSocketAddress(host, port);
+
     }
 
     public void start() {
 
         try {
-            bindServer();
+            // Start server code using selector for multiple channels
+            Selector selector = null;
+            ServerSocketChannel serverSocket = null;
 
+            selector = Selector.open();
+
+            serverSocket = ServerSocketChannel.open();
+
+            serverSocket.bind(socketAddress);
+            serverSocket.configureBlocking(false);
+            serverSocket.register(selector, SelectionKey.OP_ACCEPT);
+
+            logger.info("Started server: " + host + ':' + port);
+
+            ChannelProcessor channelProcessor = new ChannelProcessor();
+
+            // Keep server running
             while(true) {
                 // Select channels who are ready for IO operations
                 selector.select();
@@ -55,7 +63,7 @@ public class Server {
                 while(iterator.hasNext()) {
                     SelectionKey key = iterator.next();
 
-                    // Accept incoming connections
+                    // Accept incoming connection
                     if(key.isAcceptable()) {
                         SocketChannel socketChannel = serverSocket.accept();
 
@@ -69,13 +77,10 @@ public class Server {
                     if(key.isReadable()) {
                         SocketChannel socketChannel = (SocketChannel) key.channel();
 
-                        String request = channel.readChannel(socketChannel);
+                        // Process incoming data
+                        channelProcessor.process(socketChannel);
 
-                        HTTPRequest requestHeader = new HTTPRequest(request);
-
-                        // TODO: response based on request
-                        responseMessage(socketChannel);
-
+                        // Close connection
                         logger.info("Closing: " + socketChannel);
 
                         socketChannel.close();
@@ -87,38 +92,6 @@ public class Server {
         } catch(IOException e) {
             logger.warning(e.toString());
         }
-
-    }
-
-    private void bindServer() throws IOException {
-
-        selector = Selector.open();
-
-        serverSocket = ServerSocketChannel.open();
-
-        serverSocket.bind(socketAddress);
-        serverSocket.configureBlocking(false);
-        serverSocket.register(selector, SelectionKey.OP_ACCEPT);
-
-        logger.info("Started server: " + host + ':' + port);
-
-    }
-
-    // TODO: response based on request
-    private void responseMessage(SocketChannel socketChannel) throws IOException {
-
-        String temp = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Type: text/html\r\n\r\nHello World!\n";
-
-        ByteBuffer buffer2 = ByteBuffer.allocate(temp.getBytes().length);
-
-        buffer2.put(temp.getBytes());
-        buffer2.flip();
-
-        while(buffer2.hasRemaining()) {
-            int temp2 = socketChannel.write(buffer2);
-        }
-
-        buffer2.clear();
 
     }
 

@@ -1,4 +1,4 @@
-package nl.harvest.insurance;
+package nl.harvest.insurance.web;
 
 /***
  * HTTP Request object
@@ -17,19 +17,15 @@ public class HTTPRequest {
 
     public HTTPRequest(String request) {
 
-        String[] requestFields;
-        String[] requestHeader;
-        String[] splitField;
-
-        requestFields = request.split("\r\n");
-        requestHeader = requestFields[0].split(" ");
+        String[] requestFields = request.split("\r\n");
+        String[] requestHeader = requestFields[0].split(" ");
 
         method = requestHeader[0];
         path = requestHeader[1];
         protocol = requestHeader[2];
 
         for(String field : requestFields) {
-            splitField = field.split(": ", 2);
+            String[] splitField = field.split(": ", 2);
 
             if(splitField.length > 1) {
                 headers.put(splitField[0], splitField[1]);

@@ -1,5 +1,7 @@
 package nl.harvest.insurance;
 
+import nl.harvest.insurance.web.Server;
+
 public class Main {
 
     public static void main(String[] args) {
