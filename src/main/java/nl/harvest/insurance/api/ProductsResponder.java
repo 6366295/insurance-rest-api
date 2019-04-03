@@ -1,19 +1,19 @@
 package nl.harvest.insurance.api;
 
 /**
- * Response for API regarding customer data
+ * Response for API regarding product data
  */
 
 import nl.harvest.insurance.web.HTTPResponse;
 import nl.harvest.insurance.web.HTTPRequest;
 
-public class CustomersResponder implements Responder {
+public class ProductsResponder implements Responder {
 
     @Override
     public HTTPResponse getMethod(HTTPRequest httpRequest) {
         HTTPResponse httpResponse = new HTTPResponse();
 
-        httpResponse.setBody("Hello Customers!");
+        httpResponse.setBody("Hello Products!");
 
         return httpResponse;
     }

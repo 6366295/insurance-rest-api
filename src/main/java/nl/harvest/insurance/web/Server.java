@@ -52,7 +52,7 @@ public class Server {
             ChannelProcessor channelProcessor = new ChannelProcessor();
 
             // Keep server running
-            while(true) {
+            while (true) {
                 // Select channels who are ready for IO operations
                 selector.select();
 
@@ -60,11 +60,11 @@ public class Server {
                 Iterator<SelectionKey> iterator = keys.iterator();
 
                 // Iterate over the IO-ready channels
-                while(iterator.hasNext()) {
+                while (iterator.hasNext()) {
                     SelectionKey key = iterator.next();
 
                     // Accept incoming connection
-                    if(key.isAcceptable()) {
+                    if (key.isAcceptable()) {
                         SocketChannel socketChannel = serverSocket.accept();
 
                         socketChannel.configureBlocking(false);
@@ -74,7 +74,7 @@ public class Server {
                     }
 
                     // Read incoming data
-                    if(key.isReadable()) {
+                    if (key.isReadable()) {
                         SocketChannel socketChannel = (SocketChannel) key.channel();
 
                         // Process incoming data
@@ -86,10 +86,11 @@ public class Server {
                         socketChannel.close();
                     }
 
+                    // Done with current IO-channel
                     iterator.remove();
                 }
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             logger.warning(e.toString());
         }
 

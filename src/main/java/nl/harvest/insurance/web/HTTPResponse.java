@@ -16,9 +16,9 @@ public class HTTPResponse {
         404, "404 NOT FOUND"
     );
 
-    private String protocol = null;
+    private String protocol = "HTTP/1.1";
     private String body = null;
-    private int code = 0;
+    private int code = 200;
 
     public HTTPResponse() {
     }

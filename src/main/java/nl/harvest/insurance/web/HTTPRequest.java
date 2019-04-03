@@ -10,6 +10,7 @@ import java.util.Map;
 public class HTTPRequest {
 
     private Map<String, String> headers = new HashMap<String, String>();
+    private Map<String, String> parameters = new HashMap<String, String>();
 
     private String method = null;
     private String path = null;
@@ -21,13 +22,29 @@ public class HTTPRequest {
         String[] requestHeader = requestFields[0].split(" ");
 
         method = requestHeader[0];
-        path = requestHeader[1];
         protocol = requestHeader[2];
 
-        for(String field : requestFields) {
+        // Split path and query
+        String[] pathQuery = requestHeader[1].split("\\?", 2);
+
+        path = pathQuery[0];
+
+        // Split query into parameters, and add them into a map
+        if (pathQuery.length == 2) {
+            String[] query = pathQuery[1].split("&");
+
+            for (String keyvalue : query) {
+                String[] keyvalue2 = keyvalue.split("=", 2);
+
+                parameters.put(keyvalue2[0], keyvalue2[1]);
+            }
+        }
+
+        // Split each header field, and add them into a map
+        for (String field : requestFields) {
             String[] splitField = field.split(": ", 2);
 
-            if(splitField.length > 1) {
+            if (splitField.length > 1) {
                 headers.put(splitField[0], splitField[1]);
             }
         }
@@ -55,6 +72,12 @@ public class HTTPRequest {
     public String getHeader(String name) {
 
         return headers.get(name);
+
+    }
+
+    public String getParameter(String name) {
+
+        return parameters.get(name);
 
     }
 
