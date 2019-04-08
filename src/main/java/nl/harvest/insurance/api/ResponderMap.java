@@ -5,13 +5,20 @@ package nl.harvest.insurance.api;
  */
 
 import java.util.HashMap;
+import java.util.Map;
 
-public final class ResponderMap extends HashMap<String, Responder> {
+public final class ResponderMap {
+
+    Map<String, Responder> map = new HashMap<String, Responder>();
 
     public ResponderMap() {
         // Add more paths here
-        this.put("/customers", new CustomersResponder());
-        this.put("/products", new ProductsResponder());
+        map.put("/customers", new CustomersResponder());
+        map.put("/products", new ProductsResponder());
+    }
+
+    public Responder get(String path) {
+        return map.get(path);
     }
 
 }

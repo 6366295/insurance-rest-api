@@ -11,4 +11,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+dependencies {
+    implementation 'org.hibernate:hibernate-core:5.4.2.Final'
+
+    compile(group: 'org.postgresql', name: 'postgresql', version: '42.2.5')
+}
+
 mainClassName = 'nl.harvest.insurance.Main'

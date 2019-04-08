@@ -49,8 +49,6 @@ public class Server {
 
             logger.info("Started server: " + host + ':' + port);
 
-            ChannelProcessor channelProcessor = new ChannelProcessor();
-
             // Keep server running
             while (true) {
                 // Select channels who are ready for IO operations
@@ -78,6 +76,8 @@ public class Server {
                         SocketChannel socketChannel = (SocketChannel) key.channel();
 
                         // Process incoming data
+                        ChannelProcessor channelProcessor = new ChannelProcessor();
+                        
                         channelProcessor.process(socketChannel);
 
                         // Close connection
