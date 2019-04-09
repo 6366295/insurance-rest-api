@@ -1,6 +1,7 @@
 package nl.harvest.insurance.data;
 
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,27 +9,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.OneToMany;
 
 @Entity(name = "PRODUCTS")
 public class Product {
 
     private int id;
-    private String firstName;
-    private String lastName;
+    private String productName;
+    private int price;
 
-    private Customer customer;
+    private Set<Application> application;
 
     public Product() {
     }
 
-    public Product(Customer customer) {
-        this.customer = customer;
+    @OneToMany(mappedBy="product")
+    public Set<Application> getApplication() {
+        return application;
+    }
+    public void setApplication(Set<Application> application) {
+        this.application = application;
     }
 
     @Id
+    @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
@@ -38,33 +42,22 @@ public class Product {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name="customer_id", nullable=false)
-    // @JoinTable(name = "customers", joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "customer_id"))
-    public Customer getCustomer() {
-        return customer;
+    @Column(name = "product_name")
+    public String getProductName() {
+        return productName;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    @Column(name = "first_name")
-    public String getFirstName() {
-        return firstName;
+    @Column(name = "price")
+    public int getPrice() {
+        return price;
     }
 
-    public void setFirstName(String first_name) {
-        this.firstName = first_name;
-    }
-
-    @Column(name = "last_name")
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String last_name) {
-        this.lastName = last_name;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
 }

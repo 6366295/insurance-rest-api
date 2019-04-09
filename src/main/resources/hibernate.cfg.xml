@@ -36,6 +36,7 @@
 
         <mapping class="nl.harvest.insurance.data.Customer"/>
         <mapping class="nl.harvest.insurance.data.Product"/>
+        <mapping class="nl.harvest.insurance.data.Application"/>
 
     </session-factory>
 

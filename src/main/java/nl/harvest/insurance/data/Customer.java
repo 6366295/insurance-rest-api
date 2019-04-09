@@ -26,14 +26,14 @@ public class Customer {
     private String email;
     private String iban;
 
-    private Set<Product> products;
+    private Set<Application> application;
 
     @OneToMany(mappedBy="customer")
-    public Set<Product> getProducts() {
-        return products;
+    public Set<Application> getApplication() {
+        return application;
     }
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setApplication(Set<Application> application) {
+        this.application = application;
     }
 
     public Customer() {
