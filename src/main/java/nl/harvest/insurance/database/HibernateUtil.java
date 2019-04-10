@@ -1,4 +1,4 @@
-package nl.harvest.insurance.data;
+package nl.harvest.insurance.database;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
