@@ -34,14 +34,8 @@ public class Server {
 
     public void start() {
 
-        try {
-            // Start server code using selector for multiple channels
-            Selector selector = null;
-            ServerSocketChannel serverSocket = null;
-
-            selector = Selector.open();
-
-            serverSocket = ServerSocketChannel.open();
+        try (ServerSocketChannel serverSocket = ServerSocketChannel.open();
+            Selector selector = Selector.open()) {
 
             serverSocket.bind(socketAddress);
             serverSocket.configureBlocking(false);
@@ -73,17 +67,18 @@ public class Server {
 
                     // Read incoming data
                     if (key.isReadable()) {
-                        SocketChannel socketChannel = (SocketChannel) key.channel();
+                        try  (SocketChannel socketChannel = (SocketChannel) key.channel()) {
+                            // Process incoming data
+                            ChannelProcessor channelProcessor = new ChannelProcessor();
 
-                        // Process incoming data
-                        ChannelProcessor channelProcessor = new ChannelProcessor();
-                        
-                        channelProcessor.process(socketChannel);
+                            channelProcessor.process(socketChannel);
 
-                        // Close connection
-                        logger.info("Closing: " + socketChannel);
+                            // Close connection
+                            logger.info("Closing: " + socketChannel);
 
-                        socketChannel.close();
+                            // socketChannel.close();
+                        }
+
                     }
 
                     // Done with current IO-channel

@@ -4,13 +4,15 @@ package nl.harvest.insurance.api;
  * Response for API regarding customer data
  */
 
- import org.hibernate.Session;
- import org.hibernate.Transaction;
+import com.google.gson.Gson;
 
- import nl.harvest.insurance.database.Customer;
- import nl.harvest.insurance.database.Product;
- import nl.harvest.insurance.database.Application;
- import nl.harvest.insurance.database.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import nl.harvest.insurance.database.Customer;
+import nl.harvest.insurance.database.Product;
+import nl.harvest.insurance.database.Application;
+import nl.harvest.insurance.database.HibernateUtil;
 import nl.harvest.insurance.web.HTTPResponse;
 import nl.harvest.insurance.web.HTTPRequest;
 
@@ -22,6 +24,19 @@ public class CustomersResponder implements Responder {
 
         httpResponse.setBody("Hello Customers!");
 
+        return httpResponse;
+    }
+
+    @Override
+    public HTTPResponse postMethod(HTTPRequest httpRequest) {
+        HTTPResponse httpResponse = new HTTPResponse();
+
+        Gson gson = new Gson();
+
+        Customer customer = gson.fromJson(httpRequest.getBody(), Customer.class);
+        // System.out.println(person.getZipcode());
+        // System.out.println(person.getCity());
+
         Session session;
         Transaction tx;
         session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -29,13 +44,10 @@ public class CustomersResponder implements Responder {
 
         tx = session.beginTransaction();
 
-        Customer customer = new Customer();
-
         Product product1 = new Product();
         Product product2 = new Product();
 
         Application application = new Application(customer, product1);
-
 
         session.save(customer);
         session.save(product1);
@@ -46,11 +58,6 @@ public class CustomersResponder implements Responder {
         tx.commit();
 
         return httpResponse;
-    }
-
-    @Override
-    public HTTPResponse postMethod(HTTPRequest httpRequest) {
-        return new HTTPResponse();
     }
 
 }

@@ -1,6 +1,7 @@
 package nl.harvest.insurance.web;
 
 import java.io.IOException;
+import java.lang.StringIndexOutOfBoundsException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
@@ -23,10 +24,18 @@ public class ChannelProcessor {
     public void process(SocketChannel socketChannel) throws IOException {
         this.socketChannel = socketChannel;
 
-        HTTPRequest httpRequest = readChannel();
-        HTTPResponse httpResponse = generateResponse(httpRequest);
+        try {
+            HTTPRequest httpRequest = readChannel();
+            HTTPResponse httpResponse = generateResponse(httpRequest);
 
-        writeChannel(httpResponse.toString());
+            writeChannel(httpResponse.toString());
+            
+        // Close socketChannel if there is no response from it
+        } catch (StringIndexOutOfBoundsException e) {
+            this.socketChannel.close();
+
+            System.err.println(e);
+        }
 
         this.socketChannel = null;
     }
