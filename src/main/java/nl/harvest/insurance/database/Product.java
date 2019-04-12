@@ -18,7 +18,7 @@ public class Product {
     private String productName;
     private int price;
 
-    private Set<Application> application;
+    private transient Set<Application> application;
 
     public Product() {
     }

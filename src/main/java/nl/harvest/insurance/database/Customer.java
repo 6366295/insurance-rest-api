@@ -26,7 +26,7 @@ public class Customer {
     private String email;
     private String iban;
 
-    private Set<Application> application;
+    private transient Set<Application> application;
 
     @OneToMany(mappedBy="customer")
     public Set<Application> getApplication() {
