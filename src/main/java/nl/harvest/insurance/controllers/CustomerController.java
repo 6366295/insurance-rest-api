@@ -1,4 +1,4 @@
-package nl.harvest.insurance.restresources;
+package nl.harvest.insurance.controllers;
 
 import com.google.gson.Gson;
 
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/customers")
-public class CustomerResource {
+public class CustomerController {
 
     @GetMapping()
     public String getAllCustomers() {

@@ -6,6 +6,8 @@ package nl.harvest.insurance.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class HTTPRequest {
 
@@ -15,38 +17,49 @@ public class HTTPRequest {
     private String method = null;
     private String path = null;
     private String protocol = null;
+    private String body = null;
 
     public HTTPRequest(String request) {
 
-        String[] requestFields = request.split("\r\n");
-        String[] requestHeader = requestFields[0].split(" ");
+        if (request != null) {
+            String[] requestFields = request.split("\r\n");
+            String[] requestHeader = requestFields[0].split(" ");
 
-        method = requestHeader[0];
-        protocol = requestHeader[2];
+            this.method = requestHeader[0];
+            this.protocol = requestHeader[2];
 
-        // Split path and query
-        String[] pathQuery = requestHeader[1].split("\\?", 2);
+            // Split path and query
+            String[] pathQuery = requestHeader[1].split("\\?", 2);
 
-        path = pathQuery[0];
+            // TODO: splitpath for ID and other paths
+            this.path = pathQuery[0];
 
-        // Split query into parameters, and add them into a map
-        if (pathQuery.length == 2) {
-            String[] query = pathQuery[1].split("&");
+            // Split query into parameters, and add them into a map
+            if (pathQuery.length == 2) {
+                String[] query = pathQuery[1].split("&");
 
-            for (String keyvalue : query) {
-                String[] keyvalue2 = keyvalue.split("=", 2);
+                for (String keyvalue : query) {
+                    String[] keyvalue2 = keyvalue.split("=", 2);
 
-                parameters.put(keyvalue2[0], keyvalue2[1]);
+                    this.parameters.put(keyvalue2[0], keyvalue2[1]);
+                }
+            }
+
+            // Split each header field, and add them into a map
+            for (String field : requestFields) {
+                String[] splitField = field.split(": ", 2);
+
+                if (splitField.length > 1) {
+                    this.headers.put(splitField[0], splitField[1]);
+                }
             }
         }
 
-        // Split each header field, and add them into a map
-        for (String field : requestFields) {
-            String[] splitField = field.split(": ", 2);
+        Pattern pattern = Pattern.compile("(\\{.*?\\})");
+        Matcher matcher = pattern.matcher(request);
 
-            if (splitField.length > 1) {
-                headers.put(splitField[0], splitField[1]);
-            }
+        if (matcher.find()) {
+            this.body = matcher.group(1);
         }
 
     }
@@ -60,6 +73,12 @@ public class HTTPRequest {
     public String getPath() {
 
         return this.path;
+
+    }
+
+    public String getBody() {
+
+        return this.body;
 
     }
 

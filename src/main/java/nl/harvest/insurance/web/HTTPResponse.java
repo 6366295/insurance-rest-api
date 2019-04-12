@@ -23,7 +23,7 @@ public class HTTPResponse {
     public HTTPResponse() {
     }
 
-    // Add Headers
+    // Add loop for headers
     public String toString() {
 
         return this.protocol + " " + getCode() + "\r\n\r\n" + this.body + "\n";
