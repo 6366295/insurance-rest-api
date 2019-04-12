@@ -16,27 +16,31 @@ import javax.persistence.TemporalType;
 public class Customer {
 
     private int id;
-    private String firstName;
-    private String lastName;
-    private Date birthday;
-    private String telephoneNumber;
-    private String street;
-    private String city;
-    private String zipcode;
-    private String email;
+    private String dateOfBirth;
+    private String surname;
+    private String initials;
+    private String nationality;
+    private String bsn;
     private String iban;
+    private String zipCode;
+    private String houseNumber;
+    private String streetName;
+    private String city;
+    private String telephoneNumber;
+    private String email;
 
     private transient Set<Application> application;
+
+    public Customer() {
+    }
 
     @OneToMany(mappedBy="customer")
     public Set<Application> getApplication() {
         return application;
     }
+
     public void setApplication(Set<Application> application) {
         this.application = application;
-    }
-
-    public Customer() {
     }
 
     @Id
@@ -50,50 +54,87 @@ public class Customer {
         this.id = id;
     }
 
-    @Column(name = "first_name")
-    public String getFirstName() {
-        return firstName;
+    // TODO: Properly parse Date
+    @Column(name = "date_of_birth")
+    // @Temporal(TemporalType.DATE)
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setFirstName(String first_name) {
-        this.firstName = first_name;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    @Column(name = "last_name")
-    public String getLastName() {
-        return lastName;
+    @Column(name = "surname")
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String last_name) {
-        this.lastName = last_name;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    @Column(name = "birthday")
-    @Temporal(TemporalType.DATE)
-    public Date getBirthday() {
-        return birthday;
+    @Column(name = "initials")
+    public String getInitials() {
+        return initials;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setInitials(String initials) {
+        this.initials = initials;
     }
 
-    @Column(name = "telephone_number")
-    public String getTelephoneNumber() {
-        return telephoneNumber;
+    @Column(name = "nationality")
+    public String getNationality() {
+        return nationality;
     }
 
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
-    @Column(name = "street")
-    public String getStreet() {
-        return street;
+    @Column(name = "bsn")
+    public String getBsn() {
+        return bsn;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setBsn(String bsn) {
+        this.bsn = bsn;
+    }
+
+    @Column(name = "iban")
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    @Column(name = "zip_code")
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    @Column(name = "house_number")
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    @Column(name = "street_name")
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     @Column(name = "city")
@@ -105,13 +146,13 @@ public class Customer {
         this.city = city;
     }
 
-    @Column(name = "zipcode")
-    public String getZipcode() {
-        return zipcode;
+    @Column(name = "telephone_number")
+    public String getTelephoneNumber() {
+        return telephoneNumber;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     @Column(name = "email")
@@ -121,15 +162,6 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Column(name = "iban")
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
     }
 
 }
