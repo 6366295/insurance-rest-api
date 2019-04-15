@@ -12,6 +12,9 @@ import javax.persistence.TypedQuery;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping(value = "/products", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@CrossOrigin(origins = "http://localhost:8080")
 public class ProductController {
 
     private static Gson gson = new Gson();
 
     @GetMapping()
-    public String getAllProducts() {
+    public ResponseEntity<String> getAllProducts() {
 
         EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
@@ -42,7 +46,7 @@ public class ProductController {
         // Deserialize List
         String jsonString = gson.toJson(products);
 
-        return jsonString;
+        return ResponseEntity.ok(jsonString);
 
     }
 
@@ -62,7 +66,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{productId}")
-    public String getProduct(@PathVariable("productId") int productId) {
+    public ResponseEntity<String> getProduct(@PathVariable("productId") int productId) {
 
         // Find data with productId primary key
         EntityManager entityManager = EntityManagerUtil.getEntityManager();
@@ -72,7 +76,8 @@ public class ProductController {
         entityManager.detach(product);
         entityManager.close();
 
-        return gson.toJson(product);
+        return ResponseEntity.ok(gson.toJson(product));
+        // return gson.toJson(product);
 
     }
 
