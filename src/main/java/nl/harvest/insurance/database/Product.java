@@ -27,8 +27,13 @@ public class Product {
     public Set<Application> getApplication() {
         return application;
     }
+
     public void setApplication(Set<Application> application) {
         this.application = application;
+    }
+
+    public void addApplication(Application application) {
+        this.application.add(application);
     }
 
     @Id

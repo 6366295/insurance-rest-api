@@ -43,6 +43,10 @@ public class Customer {
         this.application = application;
     }
 
+    public void addApplication(Application application) {
+        this.application.add(application);
+    }
+
     @Id
     @Column(name = "customer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
