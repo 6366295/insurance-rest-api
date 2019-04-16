@@ -1,24 +1,18 @@
 # Insurance Request REST API
 
-* Designing a REST API for applying for a generic insurance. See [Wiki](https://github.com/6366295/insurance-rest-api/wiki/Design-Document) for design documentation.
-* Frameworks: Plain Java
-* Data storage solution: SQL
+Designing a REST API for applying for a generic insurance.
+* Frameworks: Spring Framework
+* Database Framework: Hibernate JPA2
+* Database: PostgreSQL
 * Build Tool: Gradle
 
 ### To do list
 
-* Proper HTTP header processing of incoming requests
-* Proper HTTP headers in responses
-* CORS support
-* Sub-resources support(?), like host/customers/{id}/products to list all insurances a customer applied for.
-* Database (Probably Hibernate)
-* Client webpage (Using node.js and NPM)
-
-## Installation
-
-```
-gradle build
-```
+* Use Spring Data
+* Separate database from controller
+* Error Handling
+* (Unit) Testing
+* Make Docker Image
 
 ## Usage
 
