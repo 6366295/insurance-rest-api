@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import java.lang.NumberFormatException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -129,7 +130,9 @@ public class CustomerController {
 
             return ResponseEntity.ok(jsonString);
         } catch (NoResultException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\" : 404}");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"errors\":[{\"code\":404,\"message\":\"Not Found\"}]}");
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"errors\":[{\"code\":400,\"message\":\"Bad Request\"}]}");
         } finally {
             entityManager.close();
         }
