@@ -15,12 +15,6 @@ Designing a REST API for applying for a generic insurance.
 * (Unit) Testing
 * Make Docker Image
 
-## Usage
-
-```
-gradle run
-```
-
 ## Setup PostgreSQL using Docker
 
 Pull the latest PostgreSQL docker image:
@@ -29,16 +23,23 @@ Pull the latest PostgreSQL docker image:
 docker pull postgres
 ```
 
+Create new Docker bridge network
+
+```
+docker network create -d bridge <docker network name>
+```
+
 Run PostgreSQL using Docker, auto creates database :
 
 ```
 docker run --rm -d \
 --name <container name> \
 --mount type=bind,source=<volume path>,destination=/var/lib/postgresql/data \
+--network <docker network name>
 -e POSTGRES_PASSWORD=<password> \
 -e POSTGRES_USER=<user> \
 -e POSTGRES_DB=<database name> \
--p <port>:5432 \
+-p <exposed port>:5432 \
 postgres
 ```
 
@@ -51,5 +52,35 @@ docker stop <container name>
 Enter PostgreSQL command-line:
 
 ```
-psql -h localhost -p <port> -U <user> -d <database name>
+psql -h localhost -p <exposed port> -U <user> -d <database name>
+```
+
+## Usage
+
+Change persistence.xml property:
+
+```
+<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://<container name>:5432/<database name>"/>
+```
+
+Build:
+
+```
+gradle build && docker build --tag=<docker image name> .
+```
+
+Run:
+
+```
+docker run --rm \
+--name <container name 2> \
+--network <docker network name> \
+-p 8080:8080 \
+<docker image name>
+```
+
+Stop:
+
+```
+docker stop --rm <container name 2>
 ```
