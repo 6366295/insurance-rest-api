@@ -39,7 +39,7 @@ docker run --rm -d \
 -e POSTGRES_PASSWORD=<password> \
 -e POSTGRES_USER=<user> \
 -e POSTGRES_DB=<database name> \
--p <exposed port>:5432 \
+-p <publish port>:5432 \
 postgres
 ```
 
@@ -52,7 +52,7 @@ docker stop <container name>
 Enter PostgreSQL command-line:
 
 ```
-psql -h localhost -p <exposed port> -U <user> -d <database name>
+psql -h localhost -p <publish port> -U <user> -d <database name>
 ```
 
 ## Usage
