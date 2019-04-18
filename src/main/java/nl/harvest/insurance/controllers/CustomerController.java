@@ -10,6 +10,7 @@ import nl.harvest.insurance.database.Product;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.persistence.PersistenceContext;
 
 import java.lang.NumberFormatException;
 import java.util.List;
@@ -32,10 +33,11 @@ public class CustomerController {
 
     private static Gson gson = new Gson();
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @GetMapping()
     public ResponseEntity<String> getAllCustomers() {
-
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
         // Select all fields from CUSTOMERS table
         String hql = "SELECT c FROM CUSTOMERS c";
@@ -55,8 +57,6 @@ public class CustomerController {
     @PostMapping()
     public String saveCustomer(@RequestBody Customer newCustomer) {
 
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
         // Save new customer data
         entityManager.getTransaction().begin();
         entityManager.persist(newCustomer);
@@ -69,8 +69,6 @@ public class CustomerController {
 
     @GetMapping(value = "/{customerId}")
     public ResponseEntity<String> getCustomer(@PathVariable("customerId") int customerId) {
-
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
         try {
             // Find data with customerId primary key
@@ -92,8 +90,6 @@ public class CustomerController {
     @GetMapping(value = "/{customerId}/products")
     public ResponseEntity<String> getProductsOfCustomer(@PathVariable("customerId") String customerId) {
 
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
         String hql = "SELECT p FROM PRODUCTS p INNER JOIN p.application as a WHERE a.customer.id = :cId";
 
         TypedQuery<Product> q = entityManager.createQuery(hql, Product.class).setParameter("cId", Integer.parseInt(customerId));
@@ -111,8 +107,6 @@ public class CustomerController {
 
     @GetMapping(value = "/{customerId}/products/{productId}")
     public ResponseEntity<String> getProductOfCustomer(@PathVariable("customerId") String customerId, @PathVariable("productId") String productId) {
-
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
         String hql = "SELECT p FROM PRODUCTS p INNER JOIN p.application as a WHERE a.customer.id = :cId AND p.id = :pId";
 
