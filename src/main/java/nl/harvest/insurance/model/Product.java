@@ -1,4 +1,4 @@
-package nl.harvest.insurance.database;
+package nl.harvest.insurance.model;
 
 import java.util.Date;
 import java.util.Set;

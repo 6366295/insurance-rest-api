@@ -1,5 +1,12 @@
 package nl.harvest.insurance;
 
+import nl.harvest.insurance.model.Customer;
+import nl.harvest.insurance.model.Product;
+import nl.harvest.insurance.model.Application;
+import nl.harvest.insurance.repositories.CustomerRepository;
+import nl.harvest.insurance.repositories.ProductRepository;
+import nl.harvest.insurance.repositories.ApplicationRepository;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -13,29 +20,20 @@ public class App {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        // Fill database temporarily with test customer and product
-        // Customer customer = new Customer();
-        // Customer customer2 = new Customer();
-        // Product product = new Product();
-        // Product product2 = new Product();
-        // Product product3 = new Product();
-        //
-        // Application application = new Application(customer, product);
-        // Application application2 = new Application(customer, product2);
-        // Application application3 = new Application(customer2, product3);
-        //
-        // entityManager.getTransaction().begin();
-        //
-        // entityManager.persist(customer);
-        // entityManager.persist(customer2);
-        // entityManager.persist(product);
-        // entityManager.persist(product2);
-        // entityManager.persist(product3);
-        // entityManager.persist(application);
-        // entityManager.persist(application2);
-        // entityManager.persist(application3);
-        // entityManager.getTransaction().commit();
-        // entityManager.close();
+        // Test data
+        CustomerRepository repo1 = context.getBean(CustomerRepository.class);
+        ProductRepository repo2 = context.getBean(ProductRepository.class);
+        ApplicationRepository repo3 = context.getBean(ApplicationRepository.class);
+        Customer customer = new Customer("test", "test2");
+        Customer customer2 = new Customer("test3", "test4");
+        Product product = new Product();
+        Application app = new Application(customer, product);
+        Application app2 = new Application(customer2, product);
+        repo1.save(customer);
+        repo1.save(customer2);
+        repo2.save(product);
+        repo3.save(app);
+        repo3.save(app2);
     }
 
 }

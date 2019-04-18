@@ -2,19 +2,14 @@ package nl.harvest.insurance.controllers;
 
 import com.google.gson.Gson;
 
-import nl.harvest.insurance.database.Application;
-import nl.harvest.insurance.database.Customer;
-import nl.harvest.insurance.database.EntityManagerUtil;
-import nl.harvest.insurance.database.Product;
+import nl.harvest.insurance.model.Customer;
+import nl.harvest.insurance.model.Product;
+import nl.harvest.insurance.repositories.CustomerRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-import javax.persistence.PersistenceContext;
+import java.lang.Iterable;
 
-import java.lang.NumberFormatException;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,103 +28,48 @@ public class CustomerController {
 
     private static Gson gson = new Gson();
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private CustomerRepository customerRepo;
 
     @GetMapping()
     public ResponseEntity<String> getAllCustomers() {
 
-        // Select all fields from CUSTOMERS table
-        String hql = "SELECT c FROM CUSTOMERS c";
-        TypedQuery<Customer> q = entityManager.createQuery(hql, Customer.class);
+        Iterable<Customer> customers = customerRepo.findAll();
 
-        List<Customer> customers = q.getResultList();
-
-        entityManager.close();
-
-        // Deserialize List
-        String jsonString = gson.toJson(customers);
-
-        return ResponseEntity.ok(jsonString);
-
+        return ResponseEntity.ok(gson.toJson(customers));
     }
 
     @PostMapping()
     public String saveCustomer(@RequestBody Customer newCustomer) {
 
         // Save new customer data
-        entityManager.getTransaction().begin();
-        entityManager.persist(newCustomer);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        customerRepo.save(newCustomer);
 
         return gson.toJson(newCustomer);
-
     }
 
     @GetMapping(value = "/{customerId}")
     public ResponseEntity<String> getCustomer(@PathVariable("customerId") int customerId) {
 
-        try {
-            // Find data with customerId primary key
-            Customer customer = entityManager.find(Customer.class, customerId);
+        // Find data with customerId primary key
+        Customer customer = customerRepo.findById(customerId).orElse(null);
 
-            if (customer != null) {
-                entityManager.detach(customer);
-
-                return ResponseEntity.ok(gson.toJson(customer));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\" : 404}");
-            }
-        } finally {
-            entityManager.close();
-        }
-
+        return ResponseEntity.ok(gson.toJson(customer));
     }
 
     @GetMapping(value = "/{customerId}/products")
-    public ResponseEntity<String> getProductsOfCustomer(@PathVariable("customerId") String customerId) {
+    public ResponseEntity<String> getProductsOfCustomer(@PathVariable("customerId") int customerId) {
 
-        String hql = "SELECT p FROM PRODUCTS p INNER JOIN p.application as a WHERE a.customer.id = :cId";
+        Iterable<Product> products = customerRepo.findProductsByCustomerId(customerId);
 
-        TypedQuery<Product> q = entityManager.createQuery(hql, Product.class).setParameter("cId", Integer.parseInt(customerId));
-
-        List<Product> products = q.getResultList();
-
-        entityManager.close();
-
-        // Deserialize List
-        String jsonString = gson.toJson(products);
-
-        return ResponseEntity.ok(jsonString);
-
+        return ResponseEntity.ok(gson.toJson(products));
     }
 
     @GetMapping(value = "/{customerId}/products/{productId}")
-    public ResponseEntity<String> getProductOfCustomer(@PathVariable("customerId") String customerId, @PathVariable("productId") String productId) {
+    public ResponseEntity<String> getProductOfCustomer(@PathVariable("customerId") int customerId, @PathVariable("productId") int productId) {
 
-        String hql = "SELECT p FROM PRODUCTS p INNER JOIN p.application as a WHERE a.customer.id = :cId AND p.id = :pId";
+        Product product = customerRepo.findProductByCustomerIdProductId(customerId, productId);
 
-        try {
-            TypedQuery<Product> q = entityManager.createQuery(hql, Product.class)
-                .setParameter("cId", Integer.parseInt(customerId))
-                .setParameter("pId", Integer.parseInt(productId));
-
-            Product product = q.getSingleResult();
-
-            entityManager.detach(product);
-
-            // Deserialize List
-            String jsonString = gson.toJson(product);
-
-            return ResponseEntity.ok(jsonString);
-        } catch (NoResultException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"errors\":[{\"code\":404,\"message\":\"Not Found\"}]}");
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"errors\":[{\"code\":400,\"message\":\"Bad Request\"}]}");
-        } finally {
-            entityManager.close();
-        }
-
+        return ResponseEntity.ok(gson.toJson(product));
     }
 }

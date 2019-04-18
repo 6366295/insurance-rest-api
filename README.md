@@ -3,17 +3,14 @@
 Designing a REST API for applying for a generic insurance.
 
 * Frameworks: Spring Framework
-* Database Framework: Hibernate JPA2
+* Database Framework: Hibernate JPA2 / Spring Data
 * Database: PostgreSQL
-* Build Tool: Gradle
+* Build Tool: Gradle / Docker
 
 ### To do list
 
-* Use Spring Data
-* Separate database from controller
 * Error Handling
 * (Unit) Testing
-* Make Docker Image
 
 ## Setup PostgreSQL using Docker
 

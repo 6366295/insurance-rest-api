@@ -9,6 +9,7 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -19,6 +20,7 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 @Configuration
 @EnableTransactionManagement
+@EnableJpaRepositories("nl.harvest.insurance.repositories")
 public class AppConfig {
 
     @Bean
@@ -27,7 +29,7 @@ public class AppConfig {
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "nl.harvest.insurance.database" });
+        em.setPackagesToScan(new String[] { "nl.harvest.insurance.model" });
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());
 

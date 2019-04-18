@@ -2,16 +2,14 @@ package nl.harvest.insurance.controllers;
 
 import com.google.gson.Gson;
 
-import nl.harvest.insurance.database.Application;
-import nl.harvest.insurance.database.Customer;
-import nl.harvest.insurance.database.EntityManagerUtil;
-import nl.harvest.insurance.database.Product;
+import nl.harvest.insurance.model.Product;
+import nl.harvest.insurance.repositories.ProductRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import java.lang.Iterable;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,56 +27,33 @@ public class ProductController {
 
     private static Gson gson = new Gson();
 
+    @Autowired
+    private ProductRepository productRepo;
+
     @GetMapping()
     public ResponseEntity<String> getAllProducts() {
 
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        Iterable<Product> products = productRepo.findAll();
 
-        String hql = "SELECT p FROM PRODUCTS p";
-
-        // Select all fields from PRODUCTS table
-        TypedQuery<Product> q = entityManager.createQuery(hql, Product.class);
-
-        List<Product> products = q.getResultList();
-
-        entityManager.close();
-
-        // Deserialize List
-        String jsonString = gson.toJson(products);
-
-        return ResponseEntity.ok(jsonString);
-
+        return ResponseEntity.ok(gson.toJson(products));
     }
 
     @PostMapping()
     public String saveProduct(@RequestBody Product newProduct) {
 
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
         // Save new product data
-        entityManager.getTransaction().begin();
-        entityManager.persist(newProduct);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        productRepo.save(newProduct);
 
         return gson.toJson(newProduct);
-
     }
 
     @GetMapping(value = "/{productId}")
     public ResponseEntity<String> getProduct(@PathVariable("productId") int productId) {
 
         // Find data with productId primary key
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
-        Product product = entityManager.find(Product.class, productId);
-
-        entityManager.detach(product);
-        entityManager.close();
+        Product product = productRepo.findById(productId).orElse(null);
 
         return ResponseEntity.ok(gson.toJson(product));
-        // return gson.toJson(product);
-
     }
 
 }

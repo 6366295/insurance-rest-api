@@ -1,4 +1,4 @@
-package nl.harvest.insurance.database;
+package nl.harvest.insurance.model;
 
 import java.util.Date;
 import java.util.Set;
@@ -32,6 +32,11 @@ public class Customer {
     private transient Set<Application> application;
 
     public Customer() {
+    }
+
+    public Customer(String surname, String initials) {
+        this.surname = surname;
+        this.initials = initials;
     }
 
     @OneToMany(mappedBy="customer")
