@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Email;
+
 @Entity(name = "CUSTOMERS")
 public class Customer {
 

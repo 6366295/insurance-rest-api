@@ -3,6 +3,8 @@ package nl.harvest.insurance.repositories;
 import nl.harvest.insurance.model.Customer;
 import nl.harvest.insurance.model.Product;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,6 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
     public Iterable<Product> findProductsByCustomerId(@Param("customerId") int customerId);
 
     @Query("SELECT p FROM PRODUCTS p INNER JOIN p.application as a WHERE a.customer.id = :customerId AND p.id = :productId")
-    public Product findProductByCustomerIdProductId(@Param("customerId") int customerId, @Param("productId") int productId);
+    public Optional<Product> findProductByCustomerIdProductId(@Param("customerId") int customerId, @Param("productId") int productId);
 
 }

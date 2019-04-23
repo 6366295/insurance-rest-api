@@ -17,7 +17,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.4.RELEASE'
 
     implementation 'org.springframework:spring-orm:5.1.6.RELEASE'
-    implementation 'org.apache.tomcat:tomcat-dbcp:9.0.19'
 
     implementation 'org.hibernate:hibernate-core:5.4.2.Final'
     implementation 'org.postgresql:postgresql:42.2.5'

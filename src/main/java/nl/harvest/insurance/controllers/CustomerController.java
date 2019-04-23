@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import nl.harvest.insurance.model.Customer;
 import nl.harvest.insurance.model.Product;
 import nl.harvest.insurance.repositories.CustomerRepository;
+import nl.harvest.insurance.error.ResourceNotFound;
 
 import java.lang.Iterable;
 
@@ -33,7 +34,6 @@ public class CustomerController {
 
     @GetMapping()
     public ResponseEntity<String> getAllCustomers() {
-
         Iterable<Customer> customers = customerRepo.findAll();
 
         return ResponseEntity.ok(gson.toJson(customers));
@@ -41,8 +41,6 @@ public class CustomerController {
 
     @PostMapping()
     public String saveCustomer(@RequestBody Customer newCustomer) {
-
-        // Save new customer data
         customerRepo.save(newCustomer);
 
         return gson.toJson(newCustomer);
@@ -50,16 +48,13 @@ public class CustomerController {
 
     @GetMapping(value = "/{customerId}")
     public ResponseEntity<String> getCustomer(@PathVariable("customerId") int customerId) {
-
-        // Find data with customerId primary key
-        Customer customer = customerRepo.findById(customerId).orElse(null);
+        Customer customer = customerRepo.findById(customerId).orElseThrow(ResourceNotFound::new);
 
         return ResponseEntity.ok(gson.toJson(customer));
     }
 
     @GetMapping(value = "/{customerId}/products")
     public ResponseEntity<String> getProductsOfCustomer(@PathVariable("customerId") int customerId) {
-
         Iterable<Product> products = customerRepo.findProductsByCustomerId(customerId);
 
         return ResponseEntity.ok(gson.toJson(products));
@@ -67,8 +62,7 @@ public class CustomerController {
 
     @GetMapping(value = "/{customerId}/products/{productId}")
     public ResponseEntity<String> getProductOfCustomer(@PathVariable("customerId") int customerId, @PathVariable("productId") int productId) {
-
-        Product product = customerRepo.findProductByCustomerIdProductId(customerId, productId);
+        Product product = customerRepo.findProductByCustomerIdProductId(customerId, productId).orElseThrow(ResourceNotFound::new);
 
         return ResponseEntity.ok(gson.toJson(product));
     }
