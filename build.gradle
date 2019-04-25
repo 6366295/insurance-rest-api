@@ -10,6 +10,11 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.4.RELEASE'
+    testImplementation 'com.h2database:h2:1.4.199'
+
 }
 
 dependencies {

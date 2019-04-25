@@ -12,8 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 @Entity(name = "CUSTOMERS")
 public class Customer {
@@ -68,6 +69,7 @@ public class Customer {
 
     // TODO: Properly parse Date
     @Column(name = "date_of_birth")
+    // @NotBlank
     // @Temporal(TemporalType.DATE)
     public String getDateOfBirth() {
         return dateOfBirth;
@@ -78,6 +80,8 @@ public class Customer {
     }
 
     @Column(name = "surname")
+    @NotBlank
+    @Pattern(regexp="[a-zA-Z]+")
     public String getSurname() {
         return surname;
     }
@@ -87,6 +91,8 @@ public class Customer {
     }
 
     @Column(name = "initials")
+    @NotBlank
+    @Pattern(regexp="[a-zA-Z]+")
     public String getInitials() {
         return initials;
     }
@@ -96,6 +102,7 @@ public class Customer {
     }
 
     @Column(name = "nationality")
+    // @NotBlank
     public String getNationality() {
         return nationality;
     }
@@ -105,6 +112,7 @@ public class Customer {
     }
 
     @Column(name = "bsn")
+    // @NotBlank
     public String getBsn() {
         return bsn;
     }
@@ -114,6 +122,7 @@ public class Customer {
     }
 
     @Column(name = "iban")
+    // @NotBlank
     public String getIban() {
         return iban;
     }
@@ -123,6 +132,7 @@ public class Customer {
     }
 
     @Column(name = "zip_code")
+    // @NotBlank
     public String getZipCode() {
         return zipCode;
     }
@@ -132,6 +142,7 @@ public class Customer {
     }
 
     @Column(name = "house_number")
+    // @NotBlank
     public String getHouseNumber() {
         return houseNumber;
     }
@@ -141,6 +152,7 @@ public class Customer {
     }
 
     @Column(name = "street_name")
+    // @NotBlank
     public String getStreetName() {
         return streetName;
     }
@@ -150,6 +162,7 @@ public class Customer {
     }
 
     @Column(name = "city")
+    // @NotBlank
     public String getCity() {
         return city;
     }
@@ -159,6 +172,7 @@ public class Customer {
     }
 
     @Column(name = "telephone_number")
+    // @NotBlank
     public String getTelephoneNumber() {
         return telephoneNumber;
     }
@@ -168,6 +182,7 @@ public class Customer {
     }
 
     @Column(name = "email")
+    // @NotBlank
     public String getEmail() {
         return email;
     }

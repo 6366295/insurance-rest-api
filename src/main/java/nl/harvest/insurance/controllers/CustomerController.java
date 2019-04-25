@@ -27,10 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = "http://localhost:8080")
 public class CustomerController {
 
-    private static Gson gson = new Gson();
-
     @Autowired
     private CustomerRepository customerRepo;
+
+    @Autowired
+    private Gson gson;
 
     @GetMapping()
     public ResponseEntity<String> getAllCustomers() {

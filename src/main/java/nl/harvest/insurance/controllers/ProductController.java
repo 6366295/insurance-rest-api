@@ -8,6 +8,7 @@ import nl.harvest.insurance.repositories.ProductRepository;
 import java.lang.Iterable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = "http://localhost:8080")
 public class ProductController {
 
-    private static Gson gson = new Gson();
+    @Autowired
+    private Gson gson;
 
     @Autowired
     private ProductRepository productRepo;

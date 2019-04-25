@@ -11,8 +11,7 @@ public class ErrorObject {
         error = new LinkedHashMap();
 
         error.put("code", "404");
-        error.put("error", "Not Found");
-        error.put("message", "TEST");
+        error.put("message", "Resource Not Found");
         error.put("path", "path");
     }
 
