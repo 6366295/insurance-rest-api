@@ -2,7 +2,7 @@ package nl.harvest.insurance;
 
 import nl.harvest.insurance.model.Customer;
 import nl.harvest.insurance.repositories.CustomerRepository;
-import nl.harvest.insurance.error.ResourceNotFound;
+import nl.harvest.insurance.error.ResourceNotFoundException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -36,7 +36,7 @@ public class CustomerControllerTest {
         entityManager.persist(customer);
         entityManager.flush();
 
-        Customer found = customerRepo.findById(1).orElseThrow(ResourceNotFound::new);;
+        Customer found = customerRepo.findById(1).orElseThrow(ResourceNotFoundException::new);;
 
         assertThat(found.getSurname()).isEqualTo(customer.getSurname());
 
