@@ -8,7 +8,7 @@ public class ErrorObject {
     private Map<String, String> error;
 
     public ErrorObject() {
-        error = new LinkedHashMap();
+        error = new LinkedHashMap<String, String>();
 
         error.put("code", "");
         error.put("message", "");

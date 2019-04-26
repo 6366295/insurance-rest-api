@@ -92,7 +92,7 @@ public class Customer {
 
     @Column(name = "initials")
     @NotBlank
-    @Pattern(regexp="[a-zA-Z]+")
+    @Pattern(regexp="^[A-Z]([\\s][A-Z])*$")
     public String getInitials() {
         return initials;
     }

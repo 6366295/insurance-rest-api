@@ -2,6 +2,9 @@ package nl.harvest.insurance.error;
 
 import com.google.gson.Gson;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +74,11 @@ public class ExceptionHandlers extends ResponseEntityExceptionHandler {
         response.setMessage("Invalid input");
         response.setPath(((ServletWebRequest) request).getRequest().getRequestURI().toString());
 
-        System.out.println(ex);
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+
+        for (ConstraintViolation<?> violation:violations) {
+            System.out.println(violation.getMessage());
+        }
 
         return handleExceptionInternal(ex, gson.toJson(response), header, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
