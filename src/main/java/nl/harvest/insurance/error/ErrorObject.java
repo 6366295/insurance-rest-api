@@ -10,9 +10,21 @@ public class ErrorObject {
     public ErrorObject() {
         error = new LinkedHashMap();
 
-        error.put("code", "404");
-        error.put("message", "Resource Not Found");
-        error.put("path", "path");
+        error.put("code", "");
+        error.put("message", "");
+        error.put("path", "");
+    }
+
+    public void setCode(int code) {
+        error.put("code", String.valueOf(code));
+    }
+
+    public void setMessage(String message) {
+        error.put("message", message);
+    }
+
+    public void setPath(String path) {
+        error.put("path", path);
     }
 
 }

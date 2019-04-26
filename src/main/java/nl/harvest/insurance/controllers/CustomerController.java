@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import nl.harvest.insurance.model.Customer;
 import nl.harvest.insurance.model.Product;
 import nl.harvest.insurance.repositories.CustomerRepository;
-import nl.harvest.insurance.error.ResourceNotFound;
+import nl.harvest.insurance.error.ResourceNotFoundException;
 
 import java.lang.Iterable;
 
@@ -49,7 +49,7 @@ public class CustomerController {
 
     @GetMapping(value = "/{customerId}")
     public ResponseEntity<String> getCustomer(@PathVariable("customerId") int customerId) {
-        Customer customer = customerRepo.findById(customerId).orElseThrow(ResourceNotFound::new);
+        Customer customer = customerRepo.findById(customerId).orElseThrow(ResourceNotFoundException::new);
 
         return ResponseEntity.ok(gson.toJson(customer));
     }
@@ -63,7 +63,7 @@ public class CustomerController {
 
     @GetMapping(value = "/{customerId}/products/{productId}")
     public ResponseEntity<String> getProductOfCustomer(@PathVariable("customerId") int customerId, @PathVariable("productId") int productId) {
-        Product product = customerRepo.findProductByCustomerIdProductId(customerId, productId).orElseThrow(ResourceNotFound::new);
+        Product product = customerRepo.findProductByCustomerIdProductId(customerId, productId).orElseThrow(ResourceNotFoundException::new);
 
         return ResponseEntity.ok(gson.toJson(product));
     }
