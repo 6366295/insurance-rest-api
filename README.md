@@ -12,7 +12,21 @@ Designing a REST API for applying for a generic insurance.
 * Error Handling
 * (Unit) Testing
 
-## Setup PostgreSQL using Docker
+## New Usage
+
+Build:
+
+```
+docker-compose build
+```
+
+Run:
+
+```
+docker-compose up
+```
+
+## Setup PostgreSQL using Docker (Old)
 
 Pull the latest PostgreSQL docker image:
 
@@ -52,7 +66,7 @@ Enter PostgreSQL command-line:
 psql -h localhost -p <publish port> -U <user> -d <database name>
 ```
 
-## Usage
+## Usage (Old)
 
 Change persistence.xml property:
 

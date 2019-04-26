@@ -1,5 +1,6 @@
-FROM openjdk:8-jdk-alpine
+FROM gradle:5.3.1-jdk8-alpine
 
-COPY . /build
-WORKDIR /build
-ENTRYPOINT ["./gradlew","run"]
+ADD --chown=gradle:gradle . /home/gradle
+WORKDIR /home/gradle
+
+ENTRYPOINT ["gradle","run", "--stacktrace"]
