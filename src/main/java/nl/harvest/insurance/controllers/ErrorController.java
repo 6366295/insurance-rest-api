@@ -49,6 +49,7 @@ public class ErrorController extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
         final String bodyOfResponse = "Invalid Input";
+        System.out.println(ex);
 
         return handleExceptionInternal(ex, bodyOfResponse, header, HttpStatus.NOT_FOUND, request);
     }
