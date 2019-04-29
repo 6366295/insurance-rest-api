@@ -77,7 +77,7 @@ public class ExceptionHandlers extends ResponseEntityExceptionHandler {
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
 
         for (ConstraintViolation<?> violation:violations) {
-            System.out.println(violation.getMessage());
+            response.addInfo(violation.getPropertyPath().toString(), violation.getMessage());
         }
 
         return handleExceptionInternal(ex, gson.toJson(response), header, HttpStatus.UNPROCESSABLE_ENTITY, request);
