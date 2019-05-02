@@ -26,6 +26,18 @@ Run:
 docker-compose up
 ```
 
+Access frontend at:
+
+```
+https://localhost:3000
+```
+
+Access backend at:
+
+```
+https://localhost:8443
+```
+
 ## Setup PostgreSQL using Docker (Old)
 
 Pull the latest PostgreSQL docker image:

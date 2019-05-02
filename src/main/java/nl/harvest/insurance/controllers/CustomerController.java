@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://frontend:8080")
 public class CustomerController {
 
     @Autowired

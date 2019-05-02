@@ -18,3 +18,12 @@ services:
       - db
     ports:
       - 8443:8443
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile-frontend
+    depends_on:
+      - web
+    ports:
+      - 3000:3000
