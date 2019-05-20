@@ -10,7 +10,7 @@ using Insurance.Model;
 
 namespace Insurance.Repositories
 {
-    class InMemoryCustomerRepository : IRepository<Customer>
+    public class InMemoryCustomerRepository : IRepository<Customer>
     {
         private static List<Customer> customers = new List<Customer>();
 

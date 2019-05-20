@@ -7,7 +7,3 @@ Designing a REST API for applying for a generic insurance.
 Working here:
 
 https://harvesttestfunction.azurewebsites.net/customers
-
-### To do list
-
-* (Unit) Testing
